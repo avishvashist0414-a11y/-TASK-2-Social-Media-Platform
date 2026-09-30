@@ -1,0 +1,9 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="center-box">
+  <div class="big-thumb">✅</div>
+  <h1>Thank you, {{ order.full_name }}!</h1>
+  <p>Your order <strong>#{{ order.id }}</strong> totalling <strong>₹{{ order.total }}</strong> has been placed.</p>
+  <a class="btn" href="{% url 'order_list' %}">View my orders</a>
+</div>
+{% endblock %}

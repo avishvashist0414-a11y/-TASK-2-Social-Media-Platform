@@ -1,0 +1,14 @@
+{% extends "store/base.html" %}
+{% block content %}
+<div class="filters">
+  <a href="{% url 'product_list' %}" class="chip {% if not current %}active{% endif %}">All</a>
+  {% for c in categories %}
+    <a href="?category={{ c.slug }}" class="chip {% if current == c.slug %}active{% endif %}">{{ c.name }}</a>
+  {% endfor %}
+</div>
+{% if q %}<p class="muted">Results for “{{ q }}”</p>{% endif %}
+<div class="grid">
+  {% for p in products %}{% include "store/_product_card.html" %}
+  {% empty %}<p>No products found. Run <code>python manage.py seed</code> to load sample data.</p>{% endfor %}
+</div>
+{% endblock %}

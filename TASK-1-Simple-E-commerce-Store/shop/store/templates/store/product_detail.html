@@ -1,0 +1,26 @@
+{% extends "store/base.html" %}
+{% block title %}{{ product.name }} — ShopEasy{% endblock %}
+{% block content %}
+<a class="muted" href="{% url 'product_list' %}">← Back to products</a>
+<section class="detail">
+  <div class="big-thumb">{{ product.emoji }}</div>
+  <div>
+    <span class="muted">{{ product.category.name }}</span>
+    <h1>{{ product.name }}</h1>
+    <p class="price">₹{{ product.price }}</p>
+    <p>{{ product.description }}</p>
+    {% if product.stock %}
+      <p class="tag in">{{ product.stock }} in stock</p>
+      <form method="post" action="{% url 'cart_add' product.id %}" class="add-form qty-form">{% csrf_token %}
+        <label>Qty <input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}"></label>
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button class="btn">Add to cart</button>
+      </form>
+    {% else %}<p class="tag out">Out of stock</p>{% endif %}
+  </div>
+</section>
+{% if related %}
+<h2>You may also like</h2>
+<div class="grid">{% for p in related %}{% include "store/_product_card.html" %}{% endfor %}</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,17 @@
+<article class="card">
+  <a class="thumb" href="{{ p.get_absolute_url }}">{{ p.emoji }}</a>
+  <div class="card-body">
+    <span class="muted">{{ p.category.name }}</span>
+    <h3><a href="{{ p.get_absolute_url }}">{{ p.name }}</a></h3>
+    <div class="row">
+      <strong>₹{{ p.price }}</strong>
+      {% if p.stock %}
+      <form method="post" action="{% url 'cart_add' p.id %}" class="add-form">{% csrf_token %}
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button class="btn small">Add</button>
+      </form>
+      {% else %}<span class="tag out">Sold out</span>{% endif %}
+    </div>
+  </div>
+</article>

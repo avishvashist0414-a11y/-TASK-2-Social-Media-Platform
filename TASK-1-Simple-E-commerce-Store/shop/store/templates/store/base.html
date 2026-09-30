@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ShopEasy{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="logo" href="{% url 'product_list' %}">🛒 Shop<span>Easy</span></a>
+    <form class="search" action="{% url 'product_list' %}" method="get">
+      <input type="search" name="q" placeholder="Search products…" value="{{ q|default:'' }}">
+    </form>
+    <nav>
+      {% if user.is_authenticated %}
+        <a href="{% url 'order_list' %}">My orders</a>
+        <form method="post" action="{% url 'logout' %}" class="inline">{% csrf_token %}
+          <button class="link">Logout ({{ user.username }})</button></form>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% endif %}
+      <a class="cart-link" href="{% url 'cart_detail' %}">Cart <span id="cart-count" class="badge">{{ cart_count }}</span></a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  {% for message in messages %}<div class="flash {{ message.tags }}">{{ message }}</div>{% endfor %}
+  {% block content %}{% endblock %}
+</main>
+
+<div id="toast" class="toast" role="status"></div>
+<footer class="site-footer">© ShopEasy — a simple Django e-commerce demo</footer>
+<script src="{% static 'store/js/main.js' %}"></script>
+</body>
+</html>

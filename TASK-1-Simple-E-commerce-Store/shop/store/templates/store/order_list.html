@@ -1,0 +1,13 @@
+{% extends "store/base.html" %}
+{% block title %}My orders — ShopEasy{% endblock %}
+{% block content %}
+<h1>My orders</h1>
+{% for o in orders %}
+<section class="order">
+  <div class="row"><strong>Order #{{ o.id }}</strong><span class="tag in">{{ o.get_status_display }}</span></div>
+  <p class="muted">{{ o.created|date:"d M Y, H:i" }} · Ship to {{ o.address }}, {{ o.city }} {{ o.postal_code }}</p>
+  <ul>{% for it in o.items.all %}<li>{{ it.name }} × {{ it.quantity }} — ₹{{ it.subtotal }}</li>{% endfor %}</ul>
+  <p><strong>Total: ₹{{ o.total }}</strong></p>
+</section>
+{% empty %}<p>You haven't placed any orders yet.</p>{% endfor %}
+{% endblock %}
